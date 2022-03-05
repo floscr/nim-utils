@@ -1,3 +1,16 @@
 #+TITLE: Readme
 
-A bunch of simple tools to use with my setup written in [[https://nim-lang.org/][Nim Programming Language]]
+A bunch of simple tools to use with my setup written in [[https://nim-lang.org/][Nim]]
+
+* Scripts
+
+** get_url_title
+
+Fetch the title tag of a passed url
+
+*** Usage:
+
+#+begin_src sh
+get_url_title "https://nim-lang.org/"
+# Nim Programming Language
+#+end_src
