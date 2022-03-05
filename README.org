@@ -2,6 +2,13 @@
 
 A bunch of simple tools to use with my [[https://nixos.org/][nixos]] setup written in [[https://nim-lang.org/][Nim]].
 
+* Usage
+
+Only usable with nix flakes currently, have a look at this [[https://github.com/floscr/dotfiles/commit/bdab27c5a3b48a5c05cb26cd48bc2528143ba58c][commit]] on how I'm using them in my system.
+Or build with the commands below and use the bins directly.
+
+Building directly with nim might not work, as I might be passing special flags etc with nix.
+
 * Scripts
 
 ** get_url_title
