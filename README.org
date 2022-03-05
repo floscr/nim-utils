@@ -1,0 +1,3 @@
+#+TITLE: Readme
+
+A bunch of simple tools to use with my setup written in [[https://nim-lang.org/][Nim Programming Language]]

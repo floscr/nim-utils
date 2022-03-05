@@ -1,0 +1,6 @@
+result
+.nimble/
+.direnv/
+/dst/
+/tests/nimcache/
+/tests/testresults/
