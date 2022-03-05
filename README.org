@@ -1,6 +1,6 @@
 #+TITLE: Readme
 
-A bunch of simple tools to use with my setup written in [[https://nim-lang.org/][Nim]]
+A bunch of simple tools to use with my [[https://nixos.org/][nixos]] setup written in [[https://nim-lang.org/][Nim]].
 
 * Scripts
 
@@ -8,7 +8,13 @@ A bunch of simple tools to use with my setup written in [[https://nim-lang.org/]
 
 Fetch the title tag of a passed url
 
-*** Usage:
+*** Build
+
+#+begin_src
+nix build .#get_url_title
+#+end_src
+
+*** Usage
 
 #+begin_src sh
 get_url_title "https://nim-lang.org/"
