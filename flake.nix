@@ -14,42 +14,48 @@
     }:
     flake-utils.lib.eachDefaultSystem (system:
     let
-      pkgName = "get_url_title";
       pkgs = nixpkgs.legacyPackages.${system};
       nimpkgs = nimble.packages.${system};
       customNimPkgs = import ./nix/packages/nimExtraPackages.nix { inherit pkgs; inherit nimpkgs; };
       utils = import ./nix/lib/nimBuildGenerator.nix;
       inherit (nixos.lib) flatten getBin;
-    in {
-      packages.${pkgName} =
-        pkgs.stdenv.mkDerivation {
-          name = pkgName;
-          description = "Get the title from an url";
-          src = ./.;
+    in
+    {
+      packages =
+        {
+          get_url_title =
+            let
+              pkgName = "get_url_title";
+            in
+            pkgs.stdenv.mkDerivation {
+              name = pkgName;
+              description = "Get the title from an url";
+              src = ./.;
 
-          nativeBuildInputs = with pkgs; [
-            nim
-          ];
+              nativeBuildInputs = with pkgs; [
+                nim
+              ];
 
-          buildPhase = utils.makeNimBuildScript {
-            srcFile = "./src/${pkgName}.nim";
-            dstName = pkgName;
-            packages = flatten [
-              (with nimpkgs; [
-                argparse
-              ])
-              customNimPkgs.fusion
-              customNimPkgs.nimfp
-            ];
-            extraLines = [
-              "-d:ssl"
-            ];
-          };
+              buildPhase = utils.makeNimBuildScript {
+                srcFile = "./src/${pkgName}.nim";
+                dstName = pkgName;
+                packages = flatten [
+                  (with nimpkgs; [
+                    argparse
+                  ])
+                  customNimPkgs.fusion
+                  customNimPkgs.nimfp
+                ];
+                extraLines = [
+                  "-d:ssl"
+                ];
+              };
 
-          installPhase = ''
-            mkdir -p $out/lib
-            install -Dt $out/bin $TMPDIR/${pkgName}
-          '';
+              installPhase = ''
+                mkdir -p $out/lib
+                install -Dt $out/bin $TMPDIR/${pkgName}
+              '';
+            };
         };
 
       devShell = import ./shell.nix {
