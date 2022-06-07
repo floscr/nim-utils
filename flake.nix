@@ -72,12 +72,19 @@
                 nim
               ];
 
+              buildInputs = with pkgs; [
+                bluez-tools
+                bluez
+              ];
+
               buildPhase = utils.makeNimBuildScript {
                 srcFile = "./src/${pkgName}.nim";
                 dstName = pkgName;
                 packages = flatten [
                   (with nimpkgs; [
                     argparse
+                    nimbluez
+                    result
                   ])
                   customNimPkgs.fusion
                   customNimPkgs.nimfp
@@ -93,7 +100,7 @@
 
               postInstall = ''
                 wrapProgram $out/bin/${pkgName} \
-                  --prefix PATH : ${pkgs.lib.getBin customPkgs.based-connect}/bin
+                  --prefix PATH : ${pkgs.lib.getBin customPkgs.based-connect}/bin \
               '';
             };
         };
@@ -103,6 +110,8 @@
         inherit nimpkgs;
         buildInputs = with pkgs; [
           customPkgs.based-connect
+          bluez-tools
+          bluez
         ];
       };
     });
