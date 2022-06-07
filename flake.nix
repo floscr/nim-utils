@@ -15,6 +15,9 @@
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
+      customPkgs = {
+        based-connect = (pkgs.callPackage ./packages/based-connect.nix { });
+      };
       nimpkgs = nimble.packages.${system};
       customNimPkgs = import ./nix/packages/nimExtraPackages.nix { inherit pkgs; inherit nimpkgs; };
       utils = import ./nix/lib/nimBuildGenerator.nix;
@@ -56,12 +59,50 @@
                 install -Dt $out/bin $TMPDIR/${pkgName}
               '';
             };
+          bose_battery_level =
+            let
+              pkgName = "bose_battery_level";
+            in
+            pkgs.stdenv.mkDerivation {
+              name = pkgName;
+              description = "A battery level meter for Bose QC35 headphones";
+              src = ./.;
+
+              nativeBuildInputs = with pkgs; [
+                nim
+              ];
+
+              buildPhase = utils.makeNimBuildScript {
+                srcFile = "./src/${pkgName}.nim";
+                dstName = pkgName;
+                packages = flatten [
+                  (with nimpkgs; [
+                    argparse
+                  ])
+                  customNimPkgs.fusion
+                  customNimPkgs.nimfp
+                ];
+                extraLines = [
+                ];
+              };
+
+              installPhase = ''
+                mkdir -p $out/lib
+                install -Dt $out/bin $TMPDIR/${pkgName}
+              '';
+
+              postInstall = ''
+                wrapProgram $out/bin/${pkgName} \
+                  --prefix PATH : ${pkgs.lib.getBin customPkgs.based-connect}/bin
+              '';
+            };
         };
 
       devShell = import ./shell.nix {
         inherit pkgs;
         inherit nimpkgs;
         buildInputs = with pkgs; [
+          customPkgs.based-connect
         ];
       };
     });
