@@ -9,22 +9,15 @@ import fp/[
   tryM,
 ]
 
-func intToBatteryIcon(level: int): string =
+proc intToBatteryIcon(level: int): string =
   case level:
-    of 0..10:
-      ""
-    of 11..20:
-      ""
-    of 21..30:
-      ""
-    of 31..50:
-      ""
-    of 51..70:
-      ""
-    of 71..high(int):
-      ""
-    else:
-      ""
+    of 0..10:         ""
+    of 11..20:        ""
+    of 21..30:        ""
+    of 31..50:        ""
+    of 51..70:        ""
+    of 71..high(int): ""
+    else:             ""
 
 proc main(): auto =
   tryEt(paramStr(1))
