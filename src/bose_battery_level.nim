@@ -7,7 +7,10 @@ import std/[
 import fp/[
   either,
   tryM,
+  option,
+  maybe,
 ]
+import ./utils/fp
 
 proc intToBatteryIcon(level: int): string =
   case level:
@@ -19,15 +22,32 @@ proc intToBatteryIcon(level: int): string =
     of 71..high(int): ""
     else:             ""
 
+proc deviceIsOnline(deviceId: string): bool =
+  sh(&"bt-device -i {deviceId}")
+  .fold(
+    (_) => false,
+    (x: string) => x
+      .split("\n")
+      .findCond((x: string) => x.contains("Connected: 1"))
+      .isSome()
+  )
+
 proc main(): auto =
   tryEt(paramStr(1))
     .mapErrorMessage(err => "Missing first argument bluetooth device id.")
+
+    .filter(
+      (x: string) => deviceIsOnline(x),
+      (x: string) => &"Device \"{x}\" is not online",
+    )
+
     .flatMap((deviceId: string) => sh(&"based-connect {deviceId} -b").fromEither())
     .flatMap((x: string) => tryEt(x.parseInt()))
     .map(intToBatteryIcon)
+
     .bitap(
       (x: ref Exception) => (
-        echo &"Error:\n {x.msg}"; quit(1)
+        echo &"Error: {x.msg}"; quit(1)
       ),
       (x: string) => (
         echo x; quit(0)

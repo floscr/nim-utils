@@ -1,16 +1,15 @@
-import std/osproc
-import std/strutils
-import fp/either
+import std/[
+  osproc,
+  strutils,
+  sugar,
+]
+import fp/[
+  either,
+  option,
+]
 
-proc sh*(cmd: string, opts = {poStdErrToStdOut}): Either[string, string] =
-  ## Execute a shell command and wrap it in an Either
-  ## Right for a successful command (exit code: 0)
-  ## Left for a failing command (any other exit code, so 1)
-  let (res, exitCode) = execCmdEx(cmd, opts)
-  if exitCode == 0:
-    return res
-        .strip
-        .right(string)
-  return res
-    .strip
-    .left(string)
+proc findCond*[T](xs: seq[T], cond: T -> bool): Option[T] =
+  for x in xs:
+    if cond(x):
+      return some(x)
+  return none(T)

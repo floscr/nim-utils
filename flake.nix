@@ -72,6 +72,10 @@
                 nim
               ];
 
+              buildInputs = with pkgs; [
+                bluez-tools
+              ];
+
               buildPhase = utils.makeNimBuildScript {
                 srcFile = "./src/${pkgName}.nim";
                 dstName = pkgName;
@@ -104,6 +108,7 @@
         inherit nimpkgs;
         buildInputs = with pkgs; [
           customPkgs.based-connect
+          bluez-tools
         ];
       };
     });

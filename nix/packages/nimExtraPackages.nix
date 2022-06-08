@@ -15,8 +15,8 @@ with pkgs;
       ({
         owner = "floscr";
         repo = "nimfp";
-        rev = "1966bc290062b11cf8e620a2117087eeb27f83c5";
-        sha256 = "sha256-RbWuN6q6q6ElyS8TSyGctrGmgl8DdCxOvG1dwDJG1+g=";
+        rev = "a158a4524a813c315ede19ca22d5983f92c00608";
+        sha256 = "sha256-FIbs8I5CWlw6eM2UwNIkWGBddFYuSBA2gYmdJ04Smm0=";
       }))
     classy
     nimboost

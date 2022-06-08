@@ -4,7 +4,7 @@ description   = "Nim utils"
 license       = "MIT"
 
 requires "nim >= 1.6.2"
-requires "https://github.com/floscr/nimfp#1966bc290062b11cf8e620a2117087eeb27f83c5"
+requires "https://github.com/floscr/nimfp#a158a4524a813c315ede19ca22d5983f92c00608"
 requires "fusion"
 requires "argparse"
 requires "print"
