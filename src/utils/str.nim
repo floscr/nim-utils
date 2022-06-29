@@ -8,7 +8,7 @@ import fp/[
 
 const DEFAULT_TRIM_TRUNCATE_CHAR = "…"
 
-func trimAt(str: string, index: int, truncateStr = DEFAULT_TRIM_TRUNCATE_CHAR.some()): string =
+func trimAt*(str: string, index: int, truncateStr = DEFAULT_TRIM_TRUNCATE_CHAR.some()): string =
   if index < 0 or
      str.len == 0 or
      (str.len - 1 < index): str

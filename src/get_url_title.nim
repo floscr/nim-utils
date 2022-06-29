@@ -1,31 +1,14 @@
 import std/[
-  htmlparser,
-  httpclient,
   os,
   sugar,
-  xmltree,
 ]
 import argparse
 import fp/[
   either,
-  list,
   maybe,
   trym,
 ]
-
-proc getHtmlTitle(html: string): EitherS[string] =
-  html
-  .parseHtml()
-  .findAll("title")
-  .asList()
-  .headMaybe()
-  .asEither("Could not find title in html")
-  .map((x: XmlNode) => x.innerText())
-
-proc urlToTitle(url: string): EitherS[string] =
-  (tryM do: newHttpClient().getContent(url))
-  .asEitherS()
-  .flatMap((x: string) => x.getHtmlTitle())
+import ./lib/get_url_title
 
 proc cli(args = commandLineParams()): auto =
   var p = newParser():
