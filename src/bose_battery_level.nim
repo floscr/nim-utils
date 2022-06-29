@@ -43,11 +43,11 @@ proc main(): auto =
 
     .flatMap((deviceId: string) => sh(&"based-connect {deviceId} -b").fromEither())
     .flatMap((x: string) => tryEt(x.parseInt()))
-    .map((x: int) => &"{x}% <fn=2>{x.intToBatteryIcon()}</fn>")
+    .map((x: int) => &"<fn=2></fn> {x}% <fn=2> {x.intToBatteryIcon()}</fn>")
 
     .bitap(
       (x: ref Exception) => (
-        quit(1)
+        echo ""
       ),
       (x: string) => (
         echo x; quit(0)
