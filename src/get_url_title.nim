@@ -1,13 +1,17 @@
-import std/htmlparser
-import std/xmltree
-import std/httpclient
-import std/sugar
-import std/os
+import std/[
+  htmlparser,
+  httpclient,
+  os,
+  sugar,
+  xmltree,
+]
 import argparse
-import fp/trym
-import fp/list
-import fp/either
-import fp/maybe
+import fp/[
+  either,
+  list,
+  maybe,
+  trym,
+]
 
 proc getHtmlTitle(html: string): EitherS[string] =
   html
