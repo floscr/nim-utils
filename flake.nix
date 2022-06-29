@@ -70,11 +70,11 @@
 
               nativeBuildInputs = with pkgs; [
                 nim
+                makeWrapper
               ];
 
               buildInputs = with pkgs; [
                 bluez-tools
-                customPkgs.based-connect
               ];
 
               buildPhase = utils.makeNimBuildScript {
@@ -95,6 +95,12 @@
               installPhase = ''
                 mkdir -p $out/lib
                 install -Dt $out/bin $TMPDIR/${pkgName}
+                runHook postInstall
+              '';
+
+              postInstall = ''
+                wrapProgram $out/bin/${pkgName} \
+                  --prefix PATH : ${pkgs.lib.getBin customPkgs.based-connect}/bin \
               '';
             };
         };
