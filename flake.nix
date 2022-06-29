@@ -73,10 +73,6 @@
                 makeWrapper
               ];
 
-              buildInputs = with pkgs; [
-                bluez-tools
-              ];
-
               buildPhase = utils.makeNimBuildScript {
                 srcFile = "./src/${pkgName}.nim";
                 dstName = pkgName;
@@ -101,6 +97,7 @@
               postInstall = ''
                 wrapProgram $out/bin/${pkgName} \
                   --prefix PATH : ${pkgs.lib.getBin customPkgs.based-connect}/bin \
+                  --prefix PATH : ${pkgs.lib.getBin pkgs.bluez-tools}/bin \
               '';
             };
         };
