@@ -74,6 +74,7 @@
 
               buildInputs = with pkgs; [
                 bluez-tools
+                customPkgs.based-connect
               ];
 
               buildPhase = utils.makeNimBuildScript {
