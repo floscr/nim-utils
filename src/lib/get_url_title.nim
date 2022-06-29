@@ -40,8 +40,9 @@ func modifyTitle(title: string, url: string): string =
 
   case u.hostName:
     of "nitter.net":
-      let lines = title.split("\n")
-      &"Tweet: {lines[0].trimAt(100)}"
+      var title: string = title.split("\n")[0]
+      title.removeSuffix("|nitter")
+      &"Tweet: {title.trimAt(100)}"
     else: title
 
 proc urlToTitle*(url: string): EitherS[string] =

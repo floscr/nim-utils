@@ -10,7 +10,7 @@ import fp/[
 ]
 import ./lib/get_url_title
 
-const VERSION = "1.1"
+const VERSION = "1.2"
 
 proc cli(args = commandLineParams()): auto =
   var p = newParser():
