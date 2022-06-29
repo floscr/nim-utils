@@ -96,11 +96,6 @@
                 mkdir -p $out/lib
                 install -Dt $out/bin $TMPDIR/${pkgName}
               '';
-
-              postInstall = ''
-                wrapProgram $out/bin/${pkgName} \
-                  --prefix PATH : ${pkgs.lib.getBin customPkgs.based-connect}/bin \
-              '';
             };
         };
 
