@@ -15,7 +15,7 @@ import fp/[
   trym,
 ]
 import fusion/matching
-import ../utils/str
+import ../../lib/str
 
 {.experimental: "caseStmtMacros".}
 

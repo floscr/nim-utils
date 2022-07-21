@@ -11,7 +11,7 @@ Building directly with nim might not work, as I might be passing special flags e
 
 * Scripts
 
-** get_url_title
+** [[file:packages/get_url_title/][get_url_title]]
 
 Fetch the title tag of a passed url
 

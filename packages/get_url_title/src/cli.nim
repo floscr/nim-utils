@@ -8,7 +8,7 @@ import fp/[
   maybe,
   trym,
 ]
-import ./lib/get_url_title
+import ./lib
 
 const VERSION = "1.2"
 

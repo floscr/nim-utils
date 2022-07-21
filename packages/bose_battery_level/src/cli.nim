@@ -10,7 +10,7 @@ import fp/[
   option,
   maybe,
 ]
-import ./utils/fp
+import ../../lib/fp
 
 proc intToBatteryIcon(level: int): string =
   case level:

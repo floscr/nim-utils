@@ -40,7 +40,7 @@
               ];
 
               buildPhase = utils.makeNimBuildScript {
-                srcFile = "./src/${pkgName}.nim";
+                srcFile = "./packages/get_url_title/src/cli.nim";
                 dstName = pkgName;
                 packages = flatten [
                   (with nimpkgs; [
@@ -74,7 +74,7 @@
               ];
 
               buildPhase = utils.makeNimBuildScript {
-                srcFile = "./src/${pkgName}.nim";
+                srcFile = "./packages/bose_battery_level/src/cli.nim";
                 dstName = pkgName;
                 packages = flatten [
                   (with nimpkgs; [
