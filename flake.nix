@@ -16,7 +16,7 @@
     let
       pkgs = nixpkgs.legacyPackages.${system};
       customPkgs = {
-        based-connect = (pkgs.callPackage ./packages/based-connect.nix { });
+        based-connect = (pkgs.callPackage ./nix/packages/based-connect.nix { });
       };
       nimpkgs = nimble.packages.${system};
       customNimPkgs = import ./nix/packages/nimExtraPackages.nix { inherit pkgs; inherit nimpkgs; };
