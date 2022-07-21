@@ -11,6 +11,8 @@ import fp/[
 ]
 import ./utils/fp
 
+const BT_DEVICE_CLI_TIMEOUT = 5
+
 proc intToBatteryIcon(level: int): string =
   case level:
     of 0..10:         ""
@@ -22,7 +24,7 @@ proc intToBatteryIcon(level: int): string =
     else:             ""
 
 proc deviceIsOnline(deviceId: string): bool =
-  sh(&"bt-device -i {deviceId}")
+  sh(&"timeout {BT_DEVICE_CLI_TIMEOUT} bt-device -i {deviceId}")
   .fold(
     (_) => false,
     (x: string) => x
@@ -33,6 +35,10 @@ proc deviceIsOnline(deviceId: string): bool =
 
 proc main(): auto =
   tryEt(paramStr(1))
+    .filter(
+      (x: string) => not x.isEmptyOrWhitespace(),
+      err => "",
+    )
     .mapErrorMessage(err => "Missing first argument bluetooth device id.")
 
     .filter(
