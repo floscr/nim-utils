@@ -8,7 +8,6 @@ import fp/[
   either,
   tryM,
   option,
-  maybe,
 ]
 import ./utils/fp
 

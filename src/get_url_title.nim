@@ -5,8 +5,7 @@ import std/[
 import argparse
 import fp/[
   either,
-  maybe,
-  trym,
+  tryM,
 ]
 import ./lib/get_url_title
 

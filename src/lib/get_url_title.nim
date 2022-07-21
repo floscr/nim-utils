@@ -11,8 +11,7 @@ import std/[
 import fp/[
   either,
   list,
-  maybe,
-  trym,
+  tryM,
 ]
 import fusion/matching
 import ../utils/str
