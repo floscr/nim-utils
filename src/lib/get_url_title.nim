@@ -45,7 +45,8 @@ func modifyTitle(title: string, url: string): string =
 proc urlToTitle*(url: string): EitherS[string] =
   let u = url.alternativeUrl()
 
-  (tryM do: newHttpClient() .getContent(u))
+  (tryM do: newHttpClient().getContent(u))
+  .mapErrorMessage((x: string) => &"HTTP Status Code Error: {x}")
   .asEitherS()
   .flatMap((x: string) => x.getHtmlTitle())
   .map((x: string) => x.modifyTitle(u))
