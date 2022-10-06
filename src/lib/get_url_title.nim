@@ -1,7 +1,6 @@
 import std/[
   htmlparser,
   httpclient,
-  os,
   strformat,
   strutils,
   sugar,
@@ -13,7 +12,6 @@ import fp/[
   list,
   tryM,
 ]
-import fusion/matching
 import ../utils/str
 
 {.experimental: "caseStmtMacros".}
