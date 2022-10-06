@@ -55,3 +55,7 @@ proc urlToTitle*(url: string): EitherS[string] =
   .asEitherS()
   .flatMap((x: string) => x.getHtmlTitle())
   .map((x: string) => x.modifyTitle(u))
+
+when isMainModule:
+  assert urlToTitle("http://httpstat.us/200") == "No html found in string:\n200 OK".left(string)
+  assert urlToTitle("http://httpstat.us/404") == "HTTP Status Code Error: 404 Not Found".left(string)
