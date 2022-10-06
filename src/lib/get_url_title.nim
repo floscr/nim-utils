@@ -24,13 +24,18 @@ func alternativeUrl(url: string): string =
     else: url
 
 proc getHtmlTitle(html: string): EitherS[string] =
-  html
-  .parseHtml()
-  .findAll("title")
-  .asList()
-  .headMaybe()
-  .asEither("Could not find title in html")
-  .map((x: XmlNode) => x.innerText())
+  (tryM do: html.parseHtml())
+  .asEitherS()
+  # Verify that the body is actually html and not only text
+  .flatMap((x: XmlNode) => (if x.kind == xnText: (&"No html found in string:\n{x}").left(XmlNode)
+                            else: x.rightS()))
+  .flatMap((x: XmlNode) => x
+    .findAll("title")
+    .asList()
+    .headMaybe()
+    .asEither("Could not find title in html")
+    .map((x: XmlNode) => x.innerText())
+  )
 
 func modifyTitle(title: string, url: string): string =
   let u = url.parseUri()
