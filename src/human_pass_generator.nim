@@ -1,53 +1,46 @@
-import os
 import std/[
+  os,
+  sugar,
   strformat,
   strutils,
-  sequtils,
-  sugar,
-  random,
 ]
+import argparse
 import fp/[
   either,
   tryM,
-  option,
-  list,
 ]
+import ./lib/human_pass_generator
 
-proc main(wordCount = 4, maxWordLength = 8): string =
-  randomize()
+const VERSION = "1.0"
 
-  let seed = rand(10_000_000)
-  var r = initRand(seed)
+proc cli(args = commandLineParams()): auto =
+  var p = newParser():
+    flag("-v", "--version")
+    help("human_pass_generator")
+    option("-mwc", "--max-word-count", help="Number of words", default=some($DEFAULT_WORD_COUNT))
+    option("-mwl", "--max-word-length", help="Number of words", default=some($DEFAULT_WORD_LENGTH))
+    option("-mnl", "--max-number-length", help="Number of digits in number", default=some($DEFAULT_NUMBER_LENGTH))
+    option("-s", "--seed", help="Seed", default=some("10_000_000"))
+    flag("-nn", "--no-number", help="Disable numbers")
+    flag("-nr", "--no-random", help="Disable randomization (rely on seed, only works for words)")
+    argparse.run():
+      let (msg, exitCode) =
+        if opts.version:
+          (VERSION, 0)
+        else:
+          (generatePass(
+            maxWordCount=opts.maxWordCount.parseInt,
+            maxWordLength=opts.maxWordLength.parseInt,
+            maxNumberLength=opts.maxNumberLength.parseInt,
+            seed=opts.seed.parseInt,
+            isRandomized=not opts.noRandom,
+            hasNumbers=not opts.noNumber,
+          ), 0)
 
-  randomize()
-  let randomNumber = toSeq(1..4)
-  .map(x => rand(9))
-  .join("")
+      echo msg
+      quit(exitCode)
 
+  p.run(args)
 
-  var words = sh("aspell -d en dump master")
-  .fromEither()
-  .map(x => x.split("\n"))
-  .getOrElse(newSeq[string]())
-
-  r.shuffle(words)
-
-  var wordsWithLimit = newSeq[string]()
-  var index = 0
-  while wordsWithLimit.len < wordCount:
-    let newWord = words[index]
-
-    if newWord.len <= maxWordLength:
-       wordsWithLimit.add(newWord)
-
-    index = index + 1
-
-  let wordSequence = wordsWithLimit
-  .map(x => x
-       .replace("'s")
-       .toLower())
-  .join("-")
-
-  wordSequence & "-" & randomNumber
-
-echo main()
+when isMainModule:
+  cli(@["-mwc=3", "-mwl=10", "-mnl=10"])
