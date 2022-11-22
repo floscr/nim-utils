@@ -59,6 +59,45 @@
                 install -Dt $out/bin $TMPDIR/${pkgName}
               '';
             };
+          human_pass_generator =
+            let
+              pkgName = "human_pass_generator";
+            in
+            pkgs.stdenv.mkDerivation {
+              name = pkgName;
+              description = "Create passwords that are human readable";
+              src = ./.;
+
+              nativeBuildInputs = with pkgs; [
+                nim
+                makeWrapper
+              ];
+              buildPhase = utils.makeNimBuildScript {
+                srcFile = "./src/${pkgName}.nim";
+                dstName = pkgName;
+                packages = flatten [
+                  (with nimpkgs; [
+                    argparse
+                    result
+                  ])
+                  customNimPkgs.fusion
+                  customNimPkgs.nimfp
+                ];
+                extraLines = [
+                ];
+              };
+
+              installPhase = ''
+                mkdir -p $out/lib
+                install -Dt $out/bin $TMPDIR/${pkgName}
+                runHook postInstall
+              '';
+
+              postInstall = ''
+                wrapProgram $out/bin/${pkgName} \
+                  --prefix PATH : ${pkgs.lib.getBin pkgs.aspell}/bin \
+              '';
+            };
           bose_battery_level =
             let
               pkgName = "bose_battery_level";
@@ -108,6 +147,7 @@
         buildInputs = with pkgs; [
           customPkgs.based-connect
           bluez-tools
+          pkgs.aspell
         ];
       };
     });
